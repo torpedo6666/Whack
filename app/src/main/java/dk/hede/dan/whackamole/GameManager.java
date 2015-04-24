@@ -30,9 +30,8 @@ public class GameManager
     private SoundPool sounds;
     private int whackSound;
 
-    private SpriteObject mole;
     private List<SpriteObject> moles = new ArrayList<SpriteObject>();
-    private List<SpriteObject> maskes = new ArrayList<SpriteObject>();
+    private List<SpriteObject> masks = new ArrayList<SpriteObject>();
 
     private static GameManager instance;
 
@@ -52,7 +51,7 @@ public class GameManager
 
     public List<SpriteObject> GetMasks()
     {
-        return maskes;
+        return masks;
     }
 
     private GameManager()
@@ -105,17 +104,17 @@ public class GameManager
                     }
                     break;
                 case MotionEvent.ACTION_DOWN:
-                    if(!onTitle)
+                    if (!onTitle)
                     {
                         for (SpriteObject sprite : GameManager.getInstance().moles)
                         {
-                            if(sprite.GetCollsionRect().contains(x,y))
+                            if (sprite.GetCollsionRect().contains(x,y) && sprite.showing)
                             {
                                 AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
                                 float volume = audioManager.getStreamVolume(audioManager.STREAM_MUSIC);
                                 sounds.play(whackSound,volume, volume, 1,0,1);
 
-                                sprite.MoveDown();
+                                sprite.Hide();
                             }
                         }
                     }
@@ -162,12 +161,12 @@ public class GameManager
         moles.add(new SpriteObject(new PointF(555,400), context, scaleW, scaleH, screenH, screenW, true));
         moles.add(new SpriteObject(new PointF(655,450), context, scaleW, scaleH, screenH, screenW, true));
 
-        maskes.add(new SpriteObject(new PointF(50,450), context, scaleW, scaleH, screenH, screenW, false));
-        maskes.add(new SpriteObject(new PointF(150,400), context, scaleW, scaleH, screenH, screenW, false));
-        maskes.add(new SpriteObject(new PointF(250,450), context, scaleW, scaleH, screenH, screenW, false));
-        maskes.add(new SpriteObject(new PointF(350,400), context, scaleW, scaleH, screenH, screenW, false));
-        maskes.add(new SpriteObject(new PointF(450,450), context, scaleW, scaleH, screenH, screenW, false));
-        maskes.add(new SpriteObject(new PointF(550,400), context, scaleW, scaleH, screenH, screenW, false));
-        maskes.add(new SpriteObject(new PointF(650,450), context, scaleW, scaleH, screenH, screenW, false));
+        masks.add(new SpriteObject(new PointF(50, 450), context, scaleW, scaleH, screenH, screenW, false));
+        masks.add(new SpriteObject(new PointF(150, 400), context, scaleW, scaleH, screenH, screenW, false));
+        masks.add(new SpriteObject(new PointF(250, 450), context, scaleW, scaleH, screenH, screenW, false));
+        masks.add(new SpriteObject(new PointF(350, 400), context, scaleW, scaleH, screenH, screenW, false));
+        masks.add(new SpriteObject(new PointF(450, 450), context, scaleW, scaleH, screenH, screenW, false));
+        masks.add(new SpriteObject(new PointF(550, 400), context, scaleW, scaleH, screenH, screenW, false));
+        masks.add(new SpriteObject(new PointF(650, 450), context, scaleW, scaleH, screenH, screenW, false));
     }
 }

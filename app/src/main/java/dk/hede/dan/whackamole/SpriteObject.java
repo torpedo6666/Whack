@@ -9,29 +9,28 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.os.CountDownTimer;
 
 public class SpriteObject
 {
     private Bitmap sprite;
 
-    private RectF collsionRect;
-    Context con;
+    private RectF collisionRect;
     private PointF myPos;
-    private float y;
-    private float oldY;
-    public boolean moveing = false;
-    Paint rectanglePaint;
+    private float showY;
+    private float hideY;
+    private Paint rectanglePaint;
+
+    public boolean showing = false;
 
     public SpriteObject(PointF startPos, Context context, float scaleW, float scaleH, int screenH, int screenW, boolean mole)
     {
-        if(mole)
+        if (mole)
             sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.mole);
         else
             sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.mask);
 
         this.myPos = startPos;
-        this.con = context;
+
         rectanglePaint = new Paint();
         rectanglePaint.setColor(Color.RED);
         rectanglePaint.setStyle(Paint.Style.STROKE);
@@ -40,34 +39,35 @@ public class SpriteObject
 
         myPos.set((myPos.x / 800) * screenW, (myPos.y / 600) * screenH);
 
-        collsionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
-        oldY = myPos.y;
-        y = myPos.y - (sprite.getHeight() * (float)0.7);
+        collisionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
+
+        hideY = myPos.y;
+        showY = myPos.y - (sprite.getHeight() * (float)0.7);
     }
 
     public RectF GetCollsionRect()
     {
-        return collsionRect;
+        return collisionRect;
     }
 
     public void draw(Canvas canvas)
     {
         canvas.drawBitmap(sprite, myPos.x, myPos.y, null);
-        //canvas.drawRect(collsionRect, rectanglePaint);
+        //canvas.drawRect(collisionRect, rectanglePaint);
     }
 
-    public void Move()
+    public void Show()
     {
 
-        moveing = true;
-        myPos.set(myPos.x, y);
-        collsionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
+        showing = true;
+        myPos.set(myPos.x, showY);
+        collisionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
     }
 
-    public void MoveDown()
+    public void Hide()
     {
-        moveing = false;
-        myPos.set(myPos.x, oldY);
-        collsionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
+        showing = false;
+        myPos.set(myPos.x, hideY);
+        collisionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
     }
 }

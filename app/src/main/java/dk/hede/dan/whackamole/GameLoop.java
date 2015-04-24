@@ -2,16 +2,10 @@ package dk.hede.dan.whackamole;
 
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.os.CountDownTimer;
-import android.os.Looper;
 import android.os.SystemClock;
 import android.view.SurfaceHolder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -101,13 +95,13 @@ public class GameLoop extends Thread
                 timeNow = SystemClock.elapsedRealtime();
                 long timeToGo = 3 - ((timeNow - startTime) / 1000);
                 int k = r.nextInt(moles.size());
-                if (moles.get(k).moveing & timeToGo > 2)
-                    moles.get(k).MoveDown();
+                if (moles.get(k).showing & timeToGo > 2)
+                    moles.get(k).Hide();
 
 
                 if (timeToGo <= 0.1) {
-                    if (!moles.get(k).moveing)
-                        moles.get(k).Move();
+                    if (!moles.get(k).showing)
+                        moles.get(k).Show();
                     startTime = SystemClock.elapsedRealtime();
                 }
             }
