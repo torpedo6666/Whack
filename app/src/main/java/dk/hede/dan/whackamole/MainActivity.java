@@ -4,25 +4,47 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 
 public class MainActivity extends Activity {
 
     private GameView gameView;
+    AdView mAdView;
+    boolean startGame = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if(!startGame) {
+            setContentView(R.layout.activity_main);
+            ImageView img = (ImageView) findViewById(R.id.imageView);
+            img.setImageResource(R.drawable.title);
 
+
+            mAdView = (AdView) findViewById(R.id.adView);
+            AdRequest.Builder request = new AdRequest.Builder();
+            request.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+            mAdView.loadAd(request.build());
+        }
+
+
+    }
+
+    public void StartGame(View view)
+    {
         setContentView(gameView = new GameView(this));
 
         gameView.setKeepScreenOn(true);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
