@@ -4,4 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="signin_failure">Unable to sign in</string>
+    <string name="signin_other_error">This is an error</string>
+    <string name="app_id">368719051839</string>
 </resources>
