@@ -97,7 +97,7 @@ public class MainActivity extends Activity implements
             // an issue with sign-in, please try again later."
             if (!BaseGameUtils.resolveConnectionFailure(this,
                     mGoogleApiClient, connectionResult,
-                    RC_SIGN_IN, "There was an issue with sign-in, please try again later")) {
+                    RC_SIGN_IN, "There was an issue with sign-in, please try again later ")) {
                 mResolvingConnectionFailure = false;
             }
         }
