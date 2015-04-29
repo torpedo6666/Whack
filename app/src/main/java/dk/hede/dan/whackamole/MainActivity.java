@@ -71,6 +71,8 @@ public class MainActivity extends Activity implements
         setContentView(gameView = new GameView(this));
 
         gameView.setKeepScreenOn(true);
+
+        Games.Achievements.unlock(mGoogleApiClient, "CgkIv_j4yt0KEAIQBQ");
     }
 
     private static int RC_SIGN_IN = 9001;
