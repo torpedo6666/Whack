@@ -67,6 +67,11 @@ public class MainActivity extends Activity implements
     @Override
     public void onConnected(Bundle connectionHint) {
         findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+        StartGame();
+    }
+
+    public void StartGame()
+    {
         startGame = true;
         setContentView(gameView = new GameView(this));
 
@@ -116,6 +121,7 @@ public class MainActivity extends Activity implements
             mResolvingConnectionFailure = false;
             if (resultCode == RESULT_OK) {
                 mGoogleApiClient.connect();
+                StartGame();
             } else {
                 // Bring up an error dialog to alert the user that sign-in
                 // failed. The R.string.signin_failure should reference an error
