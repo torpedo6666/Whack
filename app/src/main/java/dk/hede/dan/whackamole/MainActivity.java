@@ -41,14 +41,12 @@ public class MainActivity extends Activity implements
                     .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                             // add other APIs and scopes here as needed
                     .build();
-            ImageView img = (ImageView) findViewById(R.id.imageView);
-            img.setImageResource(R.drawable.title);
 
-
+            /* Ads ikke nødvendig lige nu
             mAdView = (AdView) findViewById(R.id.adView);
             AdRequest.Builder request = new AdRequest.Builder();
             request.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
-            mAdView.loadAd(request.build());
+            mAdView.loadAd(request.build()); */
         }
 
 
@@ -69,6 +67,10 @@ public class MainActivity extends Activity implements
     @Override
     public void onConnected(Bundle connectionHint) {
         findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+        startGame = true;
+        setContentView(gameView = new GameView(this));
+
+        gameView.setKeepScreenOn(true);
     }
 
     private static int RC_SIGN_IN = 9001;
@@ -131,12 +133,7 @@ public class MainActivity extends Activity implements
         mGoogleApiClient.connect();
     }
 
-    public void StartGame(View view)
-    {
-        setContentView(gameView = new GameView(this));
 
-        gameView.setKeepScreenOn(true);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
