@@ -9,83 +9,65 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameLoop extends Thread
-{
+public class GameLoop extends Thread {
     private boolean running;
     private long startTime;
     private long timeNow;
+    private long nextMole;
     private boolean start = false;
-    private SurfaceHolder surfaceHolder;
+    private final SurfaceHolder surfaceHolder;
     private List<SpriteObject> moles = new ArrayList<SpriteObject>();
     Random r = new Random();
-    public void SetRunning(boolean running)
-    {
+
+    public void SetRunning(boolean running) {
         this.running = running;
     }
 
-    public GameLoop(SurfaceHolder surfaceHolder)
-    {
+    public GameLoop(SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
     }
 
-    public void draw(Canvas canvas)
-    {
-        try
-        {
-            canvas.drawBitmap(GameManager.getInstance().background.getImage(), 0,0,null);
+    public void draw(Canvas canvas) {
+        try {
+            canvas.drawBitmap(GameManager.getInstance().background.getImage(), 0, 0, null);
             //GameManager.getInstance().GetMole().draw(canvas);
-            for (SpriteObject o : GameManager.getInstance().GetMoles())
-            {
+            for (SpriteObject o : GameManager.getInstance().GetMoles()) {
                 o.draw(canvas);
             }
-            for (SpriteObject o : GameManager.getInstance().GetMasks())
-            {
+            for (SpriteObject o : GameManager.getInstance().GetMasks()) {
                 o.draw(canvas);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception ignored) {
 
         }
     }
 
     @Override
-    public void run()
-    {
-
-
-        while(running)
-        {
+    public void run() {
+        while (running) {
             Canvas c = null;
 
-            try
-            {
-                c=surfaceHolder.lockCanvas(null);
-                synchronized (surfaceHolder)
-                {
+            try {
+                c = surfaceHolder.lockCanvas(null);
+                synchronized (surfaceHolder) {
                     Update();
                     draw(c);
 
                 }
 
-            }
-            finally
-            {
-                if(c!=null)
-                {
+            } finally {
+                if (c != null) {
                     surfaceHolder.unlockCanvasAndPost(c);
                 }
             }
-
-
         }
     }
 
-    public void Update()
-    {
-        if(GameManager.getInstance().background.name == "inGame") {
-            if(!start) {
-                startTime = SystemClock.elapsedRealtime() ;
+    public void Update() {
+        if (GameManager.getInstance().background.name.equals("inGame")) {
+            if (!start) {
+                startTime = SystemClock.elapsedRealtime();
+                nextMole = startTime + 1000 + r.nextInt(3000);
                 start = true;
             }
 
@@ -93,19 +75,18 @@ public class GameLoop extends Thread
 
             if (moles.size() > 0) {
                 timeNow = SystemClock.elapsedRealtime();
-                long timeToGo = 3 - ((timeNow - startTime) / 1000);
-                int k = r.nextInt(moles.size());
-                if (moles.get(k).showing & timeToGo > 2)
-                    moles.get(k).Hide();
-
-
-                if (timeToGo <= 0.1) {
-                    if (!moles.get(k).showing)
+                if (nextMole <= timeNow) {
+                    int k = r.nextInt(moles.size());
+                    if (!moles.get(k).showing) {
                         moles.get(k).Show();
-                    startTime = SystemClock.elapsedRealtime();
+                        nextMole = timeNow + 1000 + r.nextInt(3000);
+                    }
                 }
             }
-        }
 
+            for (SpriteObject o : GameManager.getInstance().GetMoles()) {
+                o.update();
+            }
+        }
     }
 }

@@ -21,19 +21,20 @@ import com.google.example.games.basegameutils.BaseGameUtils;
 
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener {
 
     private GameView gameView;
     private GoogleApiClient mGoogleApiClient;
     AdView mAdView;
     boolean startGame = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if(!startGame) {
+        if (!startGame) {
             setContentView(R.layout.activity_main);
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -134,13 +135,11 @@ public class MainActivity extends Activity implements
     }
 
 
-
     @Override
     public void onConnectionSuspended(int i) {
         // Attempt to reconnect
         mGoogleApiClient.connect();
     }
-
 
 
     @Override

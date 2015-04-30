@@ -9,9 +9,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.SystemClock;
 
-public class SpriteObject
-{
+public class SpriteObject {
     private Bitmap sprite;
 
     private RectF collisionRect;
@@ -19,11 +19,11 @@ public class SpriteObject
     private float showY;
     private float hideY;
     private Paint rectanglePaint;
+    private long showTime;
 
     public boolean showing = false;
 
-    public SpriteObject(PointF startPos, Context context, float scaleW, float scaleH, int screenH, int screenW, boolean mole)
-    {
+    public SpriteObject(PointF startPos, Context context, float scaleW, float scaleH, int screenH, int screenW, boolean mole) {
         if (mole)
             sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.mole);
         else
@@ -35,37 +35,41 @@ public class SpriteObject
         rectanglePaint.setColor(Color.RED);
         rectanglePaint.setStyle(Paint.Style.STROKE);
 
-        sprite = Bitmap.createScaledBitmap(sprite, (int)(sprite.getWidth() * scaleW), (int)(sprite.getHeight() * scaleH), true);
+        sprite = Bitmap.createScaledBitmap(sprite, (int) (sprite.getWidth() * scaleW), (int) (sprite.getHeight() * scaleH), true);
 
         myPos.set((myPos.x / 800) * screenW, (myPos.y / 600) * screenH);
 
         collisionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
 
         hideY = myPos.y;
-        showY = myPos.y - (sprite.getHeight() * (float)0.7);
+        showY = myPos.y - (sprite.getHeight() * (float) 0.7);
     }
 
-    public RectF GetCollsionRect()
-    {
+    public RectF GetCollsionRect() {
         return collisionRect;
     }
 
-    public void draw(Canvas canvas)
-    {
+    public void draw(Canvas canvas) {
         canvas.drawBitmap(sprite, myPos.x, myPos.y, null);
         //canvas.drawRect(collisionRect, rectanglePaint);
     }
 
-    public void Show()
-    {
+    public void update() {
+        if (showing) {
+            if (showTime + 2000 <= SystemClock.elapsedRealtime()) {
+                Hide();
+            }
+        }
+    }
 
+    public void Show() {
         showing = true;
         myPos.set(myPos.x, showY);
         collisionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
+        showTime = SystemClock.elapsedRealtime();
     }
 
-    public void Hide()
-    {
+    public void Hide() {
         showing = false;
         myPos.set(myPos.x, hideY);
         collisionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
