@@ -31,11 +31,21 @@ public class GameLoop extends Thread {
         try {
             canvas.drawBitmap(GameManager.getInstance().background.getImage(), 0, 0, null);
             //GameManager.getInstance().GetMole().draw(canvas);
-            for (SpriteObject o : GameManager.getInstance().GetMoles()) {
-                o.draw(canvas);
+            if(GameManager.getInstance().background.name.equals("inGame"))
+            {
+                for (SpriteObject o : GameManager.getInstance().GetMoles()) {
+                    o.draw(canvas);
+                }
+                for (SpriteObject o : GameManager.getInstance().GetMasks()) {
+                    o.draw(canvas);
+                }
             }
-            for (SpriteObject o : GameManager.getInstance().GetMasks()) {
-                o.draw(canvas);
+            else if(GameManager.getInstance().background.name.equals("diffi"))
+            {
+                for(Menu m : GameManager.getInstance().GetMenu())
+                {
+                    m.draw(canvas);
+                }
             }
         } catch (Exception ignored) {
 

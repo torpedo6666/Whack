@@ -2,6 +2,7 @@ package dk.hede.dan.whackamole;
 
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -21,7 +22,7 @@ public class GameManager
 
     public Background background;
 
-    private boolean onTitle;
+    private boolean onTitle, onDiffi;
 
     private Context context;
 
@@ -32,6 +33,7 @@ public class GameManager
 
     private List<SpriteObject> moles = new ArrayList<SpriteObject>();
     private List<SpriteObject> masks = new ArrayList<SpriteObject>();
+    private List<Menu> MenuItems = new ArrayList<Menu>();
 
     private static GameManager instance;
 
@@ -53,6 +55,8 @@ public class GameManager
     {
         return masks;
     }
+
+    public List<Menu> GetMenu() {return MenuItems;}
 
     private GameManager()
     {
@@ -98,13 +102,28 @@ public class GameManager
                 case MotionEvent.ACTION_UP:
                     if(onTitle)
                     {
-                        background.setImage("inGame");
-                        onTitle = false;
-                        MakeMoles();
+                        onDiffi = true;
+                        background.setImage("diffi");
+
+                    }
+                    if(onDiffi)
+                    {
+                        Menu easy = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.easy),new PointF(290, 170), context, scaleW, scaleH, screenH, screenW);
+                        Menu medium = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.medium),new PointF(290,290), context, scaleW, scaleH, screenH, screenW);
+                        Menu hard = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.hard),new PointF(290,410), context, scaleW, scaleH, screenH, screenW);
+                        MenuItems.add(easy);
+                        MenuItems.add(medium);
+                        MenuItems.add(hard);
+                        if(easy.GetCollsionRect().contains(x,y) || medium.GetCollsionRect().contains(x,y) || hard.GetCollsionRect().contains(x,y)) {
+                            onTitle = false;
+                            onDiffi = false;
+                            background.setImage("inGame");
+                            MakeMoles();
+                        }
                     }
                     break;
                 case MotionEvent.ACTION_DOWN:
-                    if (!onTitle)
+                    if (!onTitle && !onDiffi)
                     {
                         for (SpriteObject sprite : GameManager.getInstance().moles)
                         {

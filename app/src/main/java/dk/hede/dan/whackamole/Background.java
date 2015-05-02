@@ -45,20 +45,23 @@ public class Background
 
         Bitmap menu;
         Bitmap inGame;
+        Bitmap diffi;
 
         menu = BitmapFactory.decodeResource(context.getResources(), R.drawable.title);
-
+        diffi = BitmapFactory.decodeResource(context.getResources(), R.drawable.diffi);
 
         originalWidth = menu.getWidth();
         originalHeight = menu.getHeight();
 
         menu = Bitmap.createScaledBitmap(menu, screenW, screenH, true);
+        diffi = Bitmap.createScaledBitmap(diffi, screenW, screenH, true);
 
         inGame = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
         inGame = Bitmap.createScaledBitmap(inGame, screenW, screenH, true);
 
         allImages.put("menu", menu);
         allImages.put("inGame", inGame);
+        allImages.put("diffi", diffi);
 
         setImage("menu");
     }
