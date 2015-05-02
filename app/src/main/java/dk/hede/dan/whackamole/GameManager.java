@@ -26,6 +26,8 @@ public class GameManager
 
     private Context context;
 
+    private int difficulty;
+
     private GameLoop gameLoop;
 
     private SoundPool sounds;
@@ -57,6 +59,8 @@ public class GameManager
     }
 
     public List<Menu> GetMenu() {return MenuItems;}
+
+    public int GetDifficulty() {return difficulty;}
 
     private GameManager()
     {
@@ -115,6 +119,18 @@ public class GameManager
                         MenuItems.add(medium);
                         MenuItems.add(hard);
                         if(easy.GetCollsionRect().contains(x,y) || medium.GetCollsionRect().contains(x,y) || hard.GetCollsionRect().contains(x,y)) {
+                            if(easy.GetCollsionRect().contains(x,y))
+                            {
+                                difficulty = 3000;
+                            }
+                            else if(medium.GetCollsionRect().contains(x,y))
+                            {
+                                difficulty = 2000;
+                            }
+                            else if(hard.GetCollsionRect().contains(x,y))
+                            {
+                                difficulty = 1000;
+                            }
                             onTitle = false;
                             onDiffi = false;
                             background.setImage("inGame");

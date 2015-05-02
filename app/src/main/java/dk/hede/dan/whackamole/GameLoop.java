@@ -77,7 +77,7 @@ public class GameLoop extends Thread {
         if (GameManager.getInstance().background.name.equals("inGame")) {
             if (!start) {
                 startTime = SystemClock.elapsedRealtime();
-                nextMole = startTime + 1000 + r.nextInt(3000);
+                nextMole = startTime + 1000 + r.nextInt(GameManager.getInstance().GetDifficulty());
                 start = true;
             }
 
@@ -89,7 +89,7 @@ public class GameLoop extends Thread {
                     int k = r.nextInt(moles.size());
                     if (!moles.get(k).showing) {
                         moles.get(k).Show();
-                        nextMole = timeNow + 1000 + r.nextInt(3000);
+                        nextMole = timeNow + 1000 + r.nextInt(GameManager.getInstance().GetDifficulty());
                     }
                 }
             }
