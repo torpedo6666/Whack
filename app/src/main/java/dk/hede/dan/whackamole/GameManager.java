@@ -26,6 +26,8 @@ public class GameManager
 
     private Context context;
 
+    private int points = 0;
+
     private int difficulty;
 
     private GameLoop gameLoop;
@@ -61,6 +63,8 @@ public class GameManager
     public List<Menu> GetMenu() {return MenuItems;}
 
     public int GetDifficulty() {return difficulty;}
+
+    public int GetPoints() {return points;}
 
     private GameManager()
     {
@@ -148,7 +152,7 @@ public class GameManager
                                 AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
                                 float volume = audioManager.getStreamVolume(audioManager.STREAM_MUSIC);
                                 sounds.play(whackSound,volume, volume, 1,0,1);
-
+                                points += 100;
                                 sprite.Hide();
                             }
                         }
