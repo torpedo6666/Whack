@@ -26,7 +26,7 @@ public class Menu {
         rectanglePaint.setColor(Color.RED);
         rectanglePaint.setStyle(Paint.Style.STROKE);
 
-        sprite = Bitmap.createScaledBitmap(sprite, (int) (sprite.getWidth() * scaleW), (int) (sprite.getHeight() * scaleH), true);
+
 
         myPos.set((myPos.x / 800) * screenW, (myPos.y / 600) * screenH);
 
