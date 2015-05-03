@@ -140,15 +140,15 @@ public class GameManager
                         if(easy.GetCollsionRect().contains(x,y) || medium.GetCollsionRect().contains(x,y) || hard.GetCollsionRect().contains(x,y)) {
                             if(easy.GetCollsionRect().contains(x,y))
                             {
-                                difficulty = 3000;
+                                difficulty = 2000;
                             }
                             else if(medium.GetCollsionRect().contains(x,y))
                             {
-                                difficulty = 2000;
+                                difficulty = 1500;
                             }
                             else if(hard.GetCollsionRect().contains(x,y))
                             {
-                                difficulty = 1000;
+                                difficulty = 500;
                             }
                             onTitle = false;
                             onDiffi = false;
