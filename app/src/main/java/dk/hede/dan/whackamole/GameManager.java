@@ -131,9 +131,9 @@ public class GameManager
                     }
                     if(onDiffi)
                     {
-                        Menu easy = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.easy),new PointF(290, 170), context, scaleW, scaleH, screenH, screenW);
-                        Menu medium = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.medium),new PointF(290,290), context, scaleW, scaleH, screenH, screenW);
-                        Menu hard = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.hard),new PointF(290,410), context, scaleW, scaleH, screenH, screenW);
+                        Menu easy = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.easy),new PointF(290, 165), context, scaleW, scaleH, screenH, screenW);
+                        Menu medium = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.medium),new PointF(290,285), context, scaleW, scaleH, screenH, screenW);
+                        Menu hard = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.hard),new PointF(290,405), context, scaleW, scaleH, screenH, screenW);
                         MenuItems.add(easy);
                         MenuItems.add(medium);
                         MenuItems.add(hard);

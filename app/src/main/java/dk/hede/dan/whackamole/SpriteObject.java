@@ -56,7 +56,7 @@ public class SpriteObject {
 
     public void update() {
         if (showing) {
-            if (showTime + GameManager.getInstance().GetDifficulty() <= SystemClock.elapsedRealtime()) {
+            if (showTime + GameManager.getInstance().GetDifficulty() - 500 <= SystemClock.elapsedRealtime()) {
                 Hide();
             }
         }
