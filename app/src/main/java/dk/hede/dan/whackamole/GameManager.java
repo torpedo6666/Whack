@@ -9,6 +9,8 @@ import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class GameManager
 
     public Background background;
 
-    private boolean onTitle, onDiffi;
+    private boolean onTitle, onDiffi, gameOver;
 
     private Context context;
 
@@ -34,6 +36,10 @@ public class GameManager
 
     private SoundPool sounds;
     private int whackSound;
+
+    private Menu gameOverScreen;
+
+    private GoogleApiClient mGoogle;
 
     private List<SpriteObject> moles = new ArrayList<SpriteObject>();
     private List<SpriteObject> masks = new ArrayList<SpriteObject>();
@@ -65,6 +71,15 @@ public class GameManager
     public int GetDifficulty() {return difficulty;}
 
     public int GetPoints() {return points;}
+
+    public void SetPoints(int i) {points = i;}
+
+    public Menu GetGameOverScreen() {return gameOverScreen;}
+
+    public void SetGameOver(boolean g) {this.gameOver = g;}
+
+    public void SetGoogleAPI(GoogleApiClient googleApiClient) {mGoogle = googleApiClient;}
+    public GoogleApiClient GetGoogleAPI() {return mGoogle;}
 
     private GameManager()
     {
@@ -112,7 +127,7 @@ public class GameManager
                     {
                         onDiffi = true;
                         background.setImage("diffi");
-
+                        gameOverScreen = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.gameover),new PointF(50, 50), context, scaleW, scaleH, screenH, screenW);
                     }
                     if(onDiffi)
                     {
@@ -140,6 +155,13 @@ public class GameManager
                             background.setImage("inGame");
                             MakeMoles();
                         }
+                    }
+                    if(gameOver)
+                    {
+
+                        onDiffi = true;
+                        background.setImage("diffi");
+                        gameOver = false;
                     }
                     break;
                 case MotionEvent.ACTION_DOWN:

@@ -26,11 +26,12 @@ public class Menu {
         rectanglePaint.setColor(Color.RED);
         rectanglePaint.setStyle(Paint.Style.STROKE);
 
-
+        if(this.sprite.toString() == "gameover")
+            this.sprite = Bitmap.createScaledBitmap(this.sprite, (int) (this.sprite.getWidth() * scaleW), (int) (this.sprite.getHeight() * scaleH), true);
 
         myPos.set((myPos.x / 800) * screenW, (myPos.y / 600) * screenH);
 
-        collisionRect = new RectF(myPos.x, myPos.y, myPos.x + sprite.getWidth(), myPos.y + sprite.getHeight());
+        collisionRect = new RectF(myPos.x, myPos.y, myPos.x + this.sprite.getWidth(), myPos.y + this.sprite.getHeight());
 
     }
 

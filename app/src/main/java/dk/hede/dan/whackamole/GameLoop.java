@@ -8,6 +8,8 @@ import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.view.SurfaceHolder;
 
+import com.google.android.gms.games.Games;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,7 +19,7 @@ public class GameLoop extends Thread {
     private long startTime;
     private long timeNow;
     private long nextMole;
-    private String timer;
+    private long timer;
     private boolean start = false;
     private boolean timerStart = false;
 
@@ -36,7 +38,7 @@ public class GameLoop extends Thread {
     CountDownTimer countDownTimer = new CountDownTimer(60000, 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
-            timer = Long.toString(millisUntilFinished / 1000);
+            timer = (millisUntilFinished / 1000);
         }
 
         @Override
@@ -51,15 +53,16 @@ public class GameLoop extends Thread {
             //GameManager.getInstance().GetMole().draw(canvas);
             if(GameManager.getInstance().background.name.equals("inGame"))
             {
-                Paint p = new Paint();
-                p.setColor(Color.BLACK);
-                p.setTextSize(100);
                 if(!timerStart)
                 {
                     countDownTimer.start();
                     timerStart = true;
                 }
-                canvas.drawText(timer, 800, 100, p);
+
+                Paint p = new Paint();
+                p.setColor(Color.BLACK);
+                p.setTextSize(100);
+                canvas.drawText(Long.toString(timer), 800, 100, p);
                 canvas.drawText(Integer.toString(GameManager.getInstance().GetPoints()), 100, 100, p);
                 for (SpriteObject o : GameManager.getInstance().GetMoles()) {
                     o.draw(canvas);
@@ -67,14 +70,38 @@ public class GameLoop extends Thread {
                 for (SpriteObject o : GameManager.getInstance().GetMasks()) {
                     o.draw(canvas);
                 }
+
+                if(timer < 2)
+                {
+                    if(GameManager.getInstance().GetPoints() >= 1000 && GameManager.getInstance().GetPoints() < 3500)
+                    {
+                        Games.Achievements.unlock(GameManager.getInstance().GetGoogleAPI(), "CgkIv_j4yt0KEAIQAQ");
+                    }
+                    else if(GameManager.getInstance().GetPoints() >= 3500)
+                    {
+                        Games.Achievements.unlock(GameManager.getInstance().GetGoogleAPI(), "CgkIv_j4yt0KEAIQAg");
+                    }
+                    else if(GameManager.getInstance().GetPoints() == 0)
+                    {
+                        Games.Achievements.unlock(GameManager.getInstance().GetGoogleAPI(), "CgkIv_j4yt0KEAIQAw");
+                    }
+
+                    GameManager.getInstance().SetGameOver(true);
+                    GameManager.getInstance().GetGameOverScreen().draw(canvas);
+                    countDownTimer.cancel();
+
+                }
             }
             else if(GameManager.getInstance().background.name.equals("diffi"))
             {
+                GameManager.getInstance().SetPoints(0);
+                timerStart = false;
                 for(Menu m : GameManager.getInstance().GetMenu())
                 {
                     m.draw(canvas);
                 }
             }
+
         } catch (Exception ignored) {
 
         }
@@ -102,7 +129,7 @@ public class GameLoop extends Thread {
     }
 
     public void Update() {
-        if (GameManager.getInstance().background.name.equals("inGame")) {
+        if (GameManager.getInstance().background.name.equals("inGame")  && timer != 1) {
             if (!start) {
                 startTime = SystemClock.elapsedRealtime();
                 nextMole = startTime + 1000 + r.nextInt(GameManager.getInstance().GetDifficulty());

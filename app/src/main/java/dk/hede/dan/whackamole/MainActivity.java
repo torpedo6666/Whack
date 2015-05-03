@@ -75,7 +75,7 @@ public class MainActivity extends Activity implements
     {
         startGame = true;
         setContentView(gameView = new GameView(this));
-
+        GameManager.getInstance().SetGoogleAPI(mGoogleApiClient);
         gameView.setKeepScreenOn(true);
 
         Games.Achievements.unlock(mGoogleApiClient, "CgkIv_j4yt0KEAIQBQ");
