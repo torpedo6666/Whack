@@ -34,8 +34,8 @@ public class MainActivity extends Activity implements
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (!startGame) {
-            setContentView(R.layout.activity_main);
+        setContentView(gameView = new GameView(this));
+
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -43,14 +43,8 @@ public class MainActivity extends Activity implements
                             // add other APIs and scopes here as needed
                     .build();
 
-            /* Ads ikke nødvendig lige nu
-            mAdView = (AdView) findViewById(R.id.adView);
-            AdRequest.Builder request = new AdRequest.Builder();
-            request.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
-            mAdView.loadAd(request.build()); */
-        }
-
-
+        GameManager.getInstance().SetGoogleAPI(mGoogleApiClient);
+        gameView.setKeepScreenOn(true);
     }
 
     @Override
@@ -67,19 +61,9 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-        StartGame();
-    }
-
-    public void StartGame()
-    {
-        startGame = true;
-        setContentView(gameView = new GameView(this));
-        GameManager.getInstance().SetGoogleAPI(mGoogleApiClient);
-        gameView.setKeepScreenOn(true);
-
         Games.Achievements.unlock(mGoogleApiClient, "CgkIv_j4yt0KEAIQBQ");
     }
+
 
     private static int RC_SIGN_IN = 9001;
 
@@ -112,7 +96,6 @@ public class MainActivity extends Activity implements
             }
         }
 
-        findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
     }
 
     protected void onActivityResult(int requestCode, int resultCode,
@@ -122,7 +105,6 @@ public class MainActivity extends Activity implements
             mResolvingConnectionFailure = false;
             if (resultCode == RESULT_OK) {
                 mGoogleApiClient.connect();
-                StartGame();
             } else {
                 // Bring up an error dialog to alert the user that sign-in
                 // failed. The R.string.signin_failure should reference an error
