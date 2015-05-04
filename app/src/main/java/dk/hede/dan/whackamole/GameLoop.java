@@ -60,10 +60,15 @@ public class GameLoop extends Thread {
                 }
 
                 Paint p = new Paint();
-                p.setColor(Color.BLACK);
-                p.setTextSize(100);
-                canvas.drawText(Long.toString(timer), 800, 100, p);
-                canvas.drawText(Integer.toString(GameManager.getInstance().GetPoints()), 100, 100, p);
+                p.setColor(Color.rgb(GameManager.getInstance().GetR(),GameManager.getInstance().GetG(), GameManager.getInstance().GetB()));
+                p.setTextSize(GameManager.getInstance().GetTextSize());
+
+                Paint p1 = new Paint();
+                p1.setColor(Color.BLACK);
+                p1.setTextSize(100);
+
+                canvas.drawText(Long.toString(timer), 800, 100, p1);
+                canvas.drawText(Integer.toString(GameManager.getInstance().GetPoints()), 100, 200, p);
                 for (SpriteObject o : GameManager.getInstance().GetMoles()) {
                     o.draw(canvas);
                 }

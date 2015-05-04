@@ -13,6 +13,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameManager
 {
@@ -44,6 +45,13 @@ public class GameManager
     private List<SpriteObject> moles = new ArrayList<SpriteObject>();
     private List<SpriteObject> masks = new ArrayList<SpriteObject>();
     private List<Menu> MenuItems = new ArrayList<Menu>();
+
+    private int r = 0;
+    private int b = 0;
+    private int g = 0;
+    private int textSize = 100;
+
+    private Random rnd = new Random();
 
     private static GameManager instance;
 
@@ -80,6 +88,11 @@ public class GameManager
 
     public void SetGoogleAPI(GoogleApiClient googleApiClient) {mGoogle = googleApiClient;}
     public GoogleApiClient GetGoogleAPI() {return mGoogle;}
+
+    public int GetR() {return r;}
+    public int GetG() {return g;}
+    public int GetB() {return b;}
+    public int GetTextSize() {return textSize;}
 
     private GameManager()
     {
@@ -160,6 +173,10 @@ public class GameManager
                     {
 
                         onDiffi = true;
+                        r = 0;
+                        g = 0;
+                        b = 0;
+                        textSize = 100;
                         background.setImage("diffi");
                         gameOver = false;
                     }
@@ -175,6 +192,10 @@ public class GameManager
                                 float volume = audioManager.getStreamVolume(audioManager.STREAM_MUSIC);
                                 sounds.play(whackSound,volume, volume, 1,0,1);
                                 points += 100;
+                                r = rnd.nextInt(255) ;
+                                b = rnd.nextInt(255) ;
+                                g = rnd.nextInt(255) ;
+                                textSize = rnd.nextInt(200 - 100) + 100;
                                 sprite.Hide();
                             }
                         }
