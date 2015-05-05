@@ -1,14 +1,18 @@
 package dk.hede.dan.whackamole;
 
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesActivityResultCodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,16 +63,20 @@ public class GameLoop extends Thread {
                     timerStart = true;
                 }
 
+                DisplayMetrics displayMetrics = GameManager.getInstance().GetContext().getResources().getDisplayMetrics();
+                double y = displayMetrics.heightPixels;
+                double x = displayMetrics.widthPixels / 2;
+
                 Paint p = new Paint();
-                p.setColor(Color.rgb(GameManager.getInstance().GetR(),GameManager.getInstance().GetG(), GameManager.getInstance().GetB()));
-                p.setTextSize(GameManager.getInstance().GetTextSize());
+                p.setColor(Color.rgb(GameManager.getInstance().GetR(), GameManager.getInstance().GetG(), GameManager.getInstance().GetB()));
+                p.setTextSize(GameManager.getInstance().GetContext().getResources().getDimensionPixelSize(R.dimen.fontsize1));
 
                 Paint p1 = new Paint();
                 p1.setColor(Color.BLACK);
-                p1.setTextSize(100);
+                p1.setTextSize(GameManager.getInstance().GetContext().getResources().getDimensionPixelSize(R.dimen.fontsize1));
 
-                canvas.drawText(Long.toString(timer), 800, 100, p1);
-                canvas.drawText(Integer.toString(GameManager.getInstance().GetPoints()), 100, 200, p);
+                canvas.drawText(Long.toString(timer),(float) x, p1.getTextSize(), p1);
+                canvas.drawText(Integer.toString(GameManager.getInstance().GetPoints()), GameManager.getInstance().GetContext().getResources().getDimensionPixelSize(R.dimen.timer2), GameManager.getInstance().GetContext().getResources().getDimensionPixelSize(R.dimen.timer2), p);
                 for (SpriteObject o : GameManager.getInstance().GetMoles()) {
                     o.draw(canvas);
                 }
