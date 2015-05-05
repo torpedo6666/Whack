@@ -1,6 +1,5 @@
 package dk.hede.dan.whackamole;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,8 +11,8 @@ import android.graphics.RectF;
 import android.os.SystemClock;
 
 public class SpriteObject {
+    public boolean showing = false;
     private Bitmap sprite;
-
     private RectF collisionRect;
     private PointF myPos;
     private float showY;
@@ -21,13 +20,12 @@ public class SpriteObject {
     private Paint rectanglePaint;
     private long showTime;
 
-    public boolean showing = false;
-
     public SpriteObject(PointF startPos, Context context, float scaleW, float scaleH, int screenH, int screenW, boolean mole) {
-        if (mole)
+        if (mole) {
             sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.mole);
-        else
+        } else {
             sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.mask);
+        }
 
         this.myPos = startPos;
 
@@ -51,7 +49,6 @@ public class SpriteObject {
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(sprite, myPos.x, myPos.y, null);
-        //canvas.drawRect(collisionRect, rectanglePaint);
     }
 
     public void update() {

@@ -5,28 +5,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.*;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.BaseGameUtils;
 
-
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private GameView gameView;
-    private GoogleApiClient mGoogleApiClient;
+    private static int RC_SIGN_IN = 9001;
     AdView mAdView;
     boolean startGame = false;
+    private GameView gameView;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mResolvingConnectionFailure = false;
+    private boolean mAutoStartSignInflow = true;
+    private boolean mSignInClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +35,12 @@ public class MainActivity extends Activity implements
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(gameView = new GameView(this));
 
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-                            // add other APIs and scopes here as needed
-                    .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                        // add other APIs and scopes here as needed
+                .build();
 
         GameManager.getInstance().SetGoogleAPI(mGoogleApiClient);
         gameView.setKeepScreenOn(true);
@@ -63,13 +62,6 @@ public class MainActivity extends Activity implements
     public void onConnected(Bundle connectionHint) {
         Games.Achievements.unlock(mGoogleApiClient, "CgkIv_j4yt0KEAIQBQ");
     }
-
-
-    private static int RC_SIGN_IN = 9001;
-
-    private boolean mResolvingConnectionFailure = false;
-    private boolean mAutoStartSignInflow = true;
-    private boolean mSignInClicked = false;
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {

@@ -8,39 +8,14 @@ import android.graphics.BitmapFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Background
-{
+public class Background {
+    public String name;
     Bitmap myImage;
     Map<String, Bitmap> allImages;
-
     float originalWidth;
     float originalHeight;
 
-    public String name;
-
-    public void setImage(String name)
-    {
-        myImage = allImages.get(name);
-        this.name = name;
-    }
-
-    public Bitmap getImage()
-    {
-        return myImage;
-    }
-
-    public float getOriginalWidth()
-    {
-        return originalWidth;
-    }
-
-    public float getOriginalHeight()
-    {
-        return originalHeight;
-    }
-
-    public Background(Context context, int screenW, int screenH)
-    {
+    public Background(Context context, int screenW, int screenH) {
         allImages = new HashMap<String, Bitmap>();
 
         Bitmap menu;
@@ -66,6 +41,22 @@ public class Background
         setImage("menu");
     }
 
+    public Bitmap getImage() {
+        return myImage;
+    }
+
+    public void setImage(String name) {
+        myImage = allImages.get(name);
+        this.name = name;
+    }
+
+    public float getOriginalWidth() {
+        return originalWidth;
+    }
+
+    public float getOriginalHeight() {
+        return originalHeight;
+    }
 
 
 }

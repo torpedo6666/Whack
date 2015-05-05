@@ -1,6 +1,5 @@
 package dk.hede.dan.whackamole;
 
-
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
@@ -15,92 +14,98 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameManager
-{
-
+public class GameManager {
+    private static GameManager instance;
+    public Background background;
     private SurfaceHolder surfaceHolder;
-
     private int screenW, screenH;
     private float scaleW, scaleH;
-
-    public Background background;
-
     private boolean onTitle, onDiffi, gameOver;
-
     private Context context;
-
     private int points = 0;
-
     private int difficulty;
-
     private GameLoop gameLoop;
-
     private SoundPool sounds;
     private int whackSound;
-
     private Menu gameOverScreen;
-
     private GoogleApiClient mGoogle;
-
     private List<SpriteObject> moles = new ArrayList<SpriteObject>();
     private List<SpriteObject> masks = new ArrayList<SpriteObject>();
     private List<Menu> MenuItems = new ArrayList<Menu>();
-
     private int r = 0;
     private int b = 0;
     private int g = 0;
-
     private Random rnd = new Random();
 
-    private static GameManager instance;
+    private GameManager() {
 
-    public static GameManager getInstance()
-    {
-        if(instance == null)
-        {
+    }
+
+    public static GameManager getInstance() {
+        if (instance == null) {
             instance = new GameManager();
         }
+
         return instance;
     }
 
-    public List<SpriteObject> GetMoles()
-    {
+    public List<SpriteObject> GetMoles() {
         return moles;
     }
 
-    public List<SpriteObject> GetMasks()
-    {
+    public List<SpriteObject> GetMasks() {
         return masks;
     }
 
-    public List<Menu> GetMenu() {return MenuItems;}
-
-    public int GetDifficulty() {return difficulty;}
-
-    public int GetPoints() {return points;}
-
-    public void SetPoints(int i) {points = i;}
-
-    public Menu GetGameOverScreen() {return gameOverScreen;}
-
-    public void SetGameOver(boolean g) {this.gameOver = g;}
-
-    public void SetGoogleAPI(GoogleApiClient googleApiClient) {mGoogle = googleApiClient;}
-    public GoogleApiClient GetGoogleAPI() {return mGoogle;}
-
-    public Context GetContext() {return context;}
-
-    public int GetR() {return r;}
-    public int GetG() {return g;}
-    public int GetB() {return b;}
-
-    private GameManager()
-    {
-
+    public List<Menu> GetMenu() {
+        return MenuItems;
     }
 
-    public void Setup(SurfaceHolder surfaceHolder, Context context)
-    {
+    public int GetDifficulty() {
+        return difficulty;
+    }
+
+    public int GetPoints() {
+        return points;
+    }
+
+    public void SetPoints(int i) {
+        points = i;
+    }
+
+    public Menu GetGameOverScreen() {
+        return gameOverScreen;
+    }
+
+    public void SetGameOver(boolean g) {
+        this.gameOver = g;
+    }
+
+    public void SetGoogleAPI(GoogleApiClient googleApiClient) {
+        mGoogle = googleApiClient;
+    }
+
+    public GoogleApiClient GetGoogleAPI() {
+        return mGoogle;
+    }
+
+    public Context GetContext() {
+        return context;
+    }
+
+    public int GetR() {
+        return r;
+    }
+
+    public int GetG() {
+        return g;
+    }
+
+    public int GetB() {
+        return b;
+    }
+
+    public void Setup(SurfaceHolder surfaceHolder, Context context) {
         this.surfaceHolder = surfaceHolder;
         this.context = context;
         onTitle = true;
@@ -109,58 +114,46 @@ public class GameManager
 
     }
 
-    public void setSurfaceSize(int width, int height)
-    {
-        synchronized (surfaceHolder)
-        {
+    public void setSurfaceSize(int width, int height) {
+        synchronized (surfaceHolder) {
             screenW = width;
             screenH = height;
 
-            if(background == null)
-            {
+            if (background == null) {
                 background = new Background(context, screenW, screenH);
             }
 
-            scaleW = (float)screenW / (float)background.getOriginalWidth();
-            scaleH = (float)screenH / (float)background.getOriginalHeight();
+            scaleW = (float) screenW / (float) background.getOriginalWidth();
+            scaleH = (float) screenH / (float) background.getOriginalHeight();
         }
     }
 
-    public boolean doTouchEvent(MotionEvent event)
-    {
-        synchronized (surfaceHolder)
-        {
+    public boolean doTouchEvent(MotionEvent event) {
+        synchronized (surfaceHolder) {
             int eventAction = event.getAction();
-            int x = (int)event.getX();
-            int y = (int)event.getY();
-            switch (eventAction)
-            {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            switch (eventAction) {
                 case MotionEvent.ACTION_UP:
-                    if(onTitle)
-                    {
+                    if (onTitle) {
                         onDiffi = true;
                         background.setImage("diffi");
-                        gameOverScreen = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.gameover),new PointF(50, 50), context, scaleW, scaleH, screenH, screenW);
+                        gameOverScreen = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.gameover), new PointF(50, 50), context, scaleW, scaleH, screenH, screenW);
                     }
-                    if(onDiffi)
-                    {
-                        Menu easy = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.easy),new PointF(290, 165), context, scaleW, scaleH, screenH, screenW);
-                        Menu medium = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.medium),new PointF(290,285), context, scaleW, scaleH, screenH, screenW);
-                        Menu hard = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.hard),new PointF(290,405), context, scaleW, scaleH, screenH, screenW);
+
+                    if (onDiffi) {
+                        Menu easy = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.easy), new PointF(290, 165), context, scaleW, scaleH, screenH, screenW);
+                        Menu medium = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.medium), new PointF(290, 285), context, scaleW, scaleH, screenH, screenW);
+                        Menu hard = new Menu(BitmapFactory.decodeResource(context.getResources(), R.drawable.hard), new PointF(290, 405), context, scaleW, scaleH, screenH, screenW);
                         MenuItems.add(easy);
                         MenuItems.add(medium);
                         MenuItems.add(hard);
-                        if(easy.GetCollsionRect().contains(x,y) || medium.GetCollsionRect().contains(x,y) || hard.GetCollsionRect().contains(x,y)) {
-                            if(easy.GetCollsionRect().contains(x,y))
-                            {
+                        if (easy.GetCollsionRect().contains(x, y) || medium.GetCollsionRect().contains(x, y) || hard.GetCollsionRect().contains(x, y)) {
+                            if (easy.GetCollsionRect().contains(x, y)) {
                                 difficulty = 2000;
-                            }
-                            else if(medium.GetCollsionRect().contains(x,y))
-                            {
+                            } else if (medium.GetCollsionRect().contains(x, y)) {
                                 difficulty = 1500;
-                            }
-                            else if(hard.GetCollsionRect().contains(x,y))
-                            {
+                            } else if (hard.GetCollsionRect().contains(x, y)) {
                                 difficulty = 500;
                             }
                             onTitle = false;
@@ -169,9 +162,8 @@ public class GameManager
                             MakeMoles();
                         }
                     }
-                    if(gameOver)
-                    {
 
+                    if (gameOver) {
                         onDiffi = true;
                         r = 0;
                         g = 0;
@@ -181,19 +173,16 @@ public class GameManager
                     }
                     break;
                 case MotionEvent.ACTION_DOWN:
-                    if (!onTitle && !onDiffi)
-                    {
-                        for (SpriteObject sprite : GameManager.getInstance().moles)
-                        {
-                            if (sprite.GetCollsionRect().contains(x,y) && sprite.showing)
-                            {
-                                AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+                    if (!onTitle && !onDiffi) {
+                        for (SpriteObject sprite : GameManager.getInstance().moles) {
+                            if (sprite.GetCollsionRect().contains(x, y) && sprite.showing) {
+                                AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                                 float volume = audioManager.getStreamVolume(audioManager.STREAM_MUSIC);
-                                sounds.play(whackSound,volume, volume, 1,0,1);
+                                sounds.play(whackSound, volume, volume, 1, 0, 1);
                                 points += 100;
-                                r = rnd.nextInt(255) ;
-                                b = rnd.nextInt(255) ;
-                                g = rnd.nextInt(255) ;
+                                r = rnd.nextInt(255);
+                                b = rnd.nextInt(255);
+                                g = rnd.nextInt(255);
                                 sprite.Hide();
                             }
                         }
@@ -204,8 +193,7 @@ public class GameManager
         return true;
     }
 
-    public void StartLoop()
-    {
+    public void StartLoop() {
         gameLoop = new GameLoop(surfaceHolder);
 
         gameLoop.SetRunning(true);
@@ -213,33 +201,27 @@ public class GameManager
         gameLoop.start();
     }
 
-    public void StopLoop()
-    {
+    public void StopLoop() {
         gameLoop.SetRunning(false);
 
-        while (true)
-        {
-            try
-            {
+        while (true) {
+            try {
                 gameLoop.join();
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
 
             }
             break;
         }
     }
 
-    public void MakeMoles()
-    {
-        moles.add(new SpriteObject(new PointF(55,450), context, scaleW, scaleH, screenH, screenW, true));
-        moles.add(new SpriteObject(new PointF(155,400), context, scaleW, scaleH, screenH, screenW, true));
-        moles.add(new SpriteObject(new PointF(255,450), context, scaleW, scaleH, screenH, screenW, true));
-        moles.add(new SpriteObject(new PointF(355,400), context, scaleW, scaleH, screenH, screenW, true));
-        moles.add(new SpriteObject(new PointF(455,450), context, scaleW, scaleH, screenH, screenW, true));
-        moles.add(new SpriteObject(new PointF(555,400), context, scaleW, scaleH, screenH, screenW, true));
-        moles.add(new SpriteObject(new PointF(655,450), context, scaleW, scaleH, screenH, screenW, true));
+    public void MakeMoles() {
+        moles.add(new SpriteObject(new PointF(55, 450), context, scaleW, scaleH, screenH, screenW, true));
+        moles.add(new SpriteObject(new PointF(155, 400), context, scaleW, scaleH, screenH, screenW, true));
+        moles.add(new SpriteObject(new PointF(255, 450), context, scaleW, scaleH, screenH, screenW, true));
+        moles.add(new SpriteObject(new PointF(355, 400), context, scaleW, scaleH, screenH, screenW, true));
+        moles.add(new SpriteObject(new PointF(455, 450), context, scaleW, scaleH, screenH, screenW, true));
+        moles.add(new SpriteObject(new PointF(555, 400), context, scaleW, scaleH, screenH, screenW, true));
+        moles.add(new SpriteObject(new PointF(655, 450), context, scaleW, scaleH, screenH, screenW, true));
 
         masks.add(new SpriteObject(new PointF(50, 450), context, scaleW, scaleH, screenH, screenW, false));
         masks.add(new SpriteObject(new PointF(150, 400), context, scaleW, scaleH, screenH, screenW, false));

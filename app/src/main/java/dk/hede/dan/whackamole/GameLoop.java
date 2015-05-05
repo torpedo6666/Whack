@@ -1,10 +1,7 @@
 package dk.hede.dan.whackamole;
 
-
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
@@ -12,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesActivityResultCodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +50,9 @@ public class GameLoop extends Thread {
     public void draw(Canvas canvas) {
         try {
             canvas.drawBitmap(GameManager.getInstance().background.getImage(), 0, 0, null);
-            //GameManager.getInstance().GetMole().draw(canvas);
-            if(GameManager.getInstance().background.name.equals("inGame"))
-            {
-                if(!timerStart)
-                {
+
+            if (GameManager.getInstance().background.name.equals("inGame")) {
+                if (!timerStart) {
                     countDownTimer.start();
                     timerStart = true;
                 }
@@ -75,27 +69,23 @@ public class GameLoop extends Thread {
                 p1.setColor(Color.BLACK);
                 p1.setTextSize(GameManager.getInstance().GetContext().getResources().getDimensionPixelSize(R.dimen.fontsize1));
 
-                canvas.drawText(Long.toString(timer),(float) x, p1.getTextSize(), p1);
+                canvas.drawText(Long.toString(timer), (float) x, p1.getTextSize(), p1);
                 canvas.drawText(Integer.toString(GameManager.getInstance().GetPoints()), GameManager.getInstance().GetContext().getResources().getDimensionPixelSize(R.dimen.timer2), GameManager.getInstance().GetContext().getResources().getDimensionPixelSize(R.dimen.timer2), p);
+
                 for (SpriteObject o : GameManager.getInstance().GetMoles()) {
                     o.draw(canvas);
                 }
+
                 for (SpriteObject o : GameManager.getInstance().GetMasks()) {
                     o.draw(canvas);
                 }
 
-                if(timer < 2)
-                {
-                    if(GameManager.getInstance().GetPoints() >= 1000 && GameManager.getInstance().GetPoints() < 3500)
-                    {
+                if (timer < 2) {
+                    if (GameManager.getInstance().GetPoints() >= 1000 && GameManager.getInstance().GetPoints() < 3500) {
                         Games.Achievements.unlock(GameManager.getInstance().GetGoogleAPI(), "CgkIv_j4yt0KEAIQAQ");
-                    }
-                    else if(GameManager.getInstance().GetPoints() >= 3500)
-                    {
+                    } else if (GameManager.getInstance().GetPoints() >= 3500) {
                         Games.Achievements.unlock(GameManager.getInstance().GetGoogleAPI(), "CgkIv_j4yt0KEAIQAg");
-                    }
-                    else if(GameManager.getInstance().GetPoints() == 0)
-                    {
+                    } else if (GameManager.getInstance().GetPoints() == 0) {
                         Games.Achievements.unlock(GameManager.getInstance().GetGoogleAPI(), "CgkIv_j4yt0KEAIQAw");
                     }
 
@@ -104,17 +94,13 @@ public class GameLoop extends Thread {
                     countDownTimer.cancel();
 
                 }
-            }
-            else if(GameManager.getInstance().background.name.equals("diffi"))
-            {
+            } else if (GameManager.getInstance().background.name.equals("diffi")) {
                 GameManager.getInstance().SetPoints(0);
                 timerStart = false;
-                for(Menu m : GameManager.getInstance().GetMenu())
-                {
+                for (Menu m : GameManager.getInstance().GetMenu()) {
                     m.draw(canvas);
                 }
             }
-
         } catch (Exception ignored) {
 
         }
@@ -142,7 +128,7 @@ public class GameLoop extends Thread {
     }
 
     public void Update() {
-        if (GameManager.getInstance().background.name.equals("inGame")  && timer != 1) {
+        if (GameManager.getInstance().background.name.equals("inGame") && timer != 1) {
             if (!start) {
                 startTime = SystemClock.elapsedRealtime();
                 nextMole = startTime + 1000 + r.nextInt(GameManager.getInstance().GetDifficulty());
